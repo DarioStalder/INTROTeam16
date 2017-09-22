@@ -42,8 +42,9 @@ int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
 {
 
-	int i = 18;
-	int f = 17;
+
+	int i = 32;
+
   /* Write your local variable definition here */
 
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
