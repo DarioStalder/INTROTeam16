@@ -4,13 +4,13 @@
 /*##                                   */
 /*##     Filename  : ProcessorExpert.ld */
 /*##                                   */
-/*##     Project   : killme            */
+/*##     Project   : killme_remote     */
 /*##                                   */
-/*##     Processor : MK20DX128VLH5     */
+/*##     Processor : MK20DX128VLQ10    */
 /*##                                   */
 /*##     Compiler  : GNU C Compiler    */
 /*##                                   */
-/*##     Date/Time : 2017-09-22, 16:08, # CodeGen: 0 */
+/*##     Date/Time : 2017-09-28, 16:19, # CodeGen: 0 */
 /*##                                   */
 /*##     Abstract  :                   */
 /*##                                   */
@@ -37,10 +37,10 @@ __heap_size = 0x00;                    /* required amount of heap  */
 __stack_size = 0x0400;                 /* required amount of stack */
 
 MEMORY {
-  m_interrupts (RX) : ORIGIN = 0x00000000, LENGTH = 0x000000F8
+  m_interrupts (RX) : ORIGIN = 0x00000000, LENGTH = 0x000001E0
   m_text      (RX) : ORIGIN = 0x00000410, LENGTH = 0x0001FBF0
-  m_data      (RW) : ORIGIN = 0x1FFFE000, LENGTH = 0x00002000
-  m_data_20000000 (RW) : ORIGIN = 0x20000000, LENGTH = 0x00002000
+  m_data      (RW) : ORIGIN = 0x1FFFC000, LENGTH = 0x00004000
+  m_data_20000000 (RW) : ORIGIN = 0x20000000, LENGTH = 0x00004000
   m_cfmprotrom  (RX) : ORIGIN = 0x00000400, LENGTH = 0x00000010
 }
 
