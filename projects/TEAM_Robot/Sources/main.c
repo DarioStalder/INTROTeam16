@@ -106,6 +106,12 @@
 void (*f)(void) = NULL;
 int i;
 
+static void TestHF_1(void) {
+	  void(*f) (void) = 0;
+	  f();
+	  for (;;);
+		  asm("nop");
+}
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
@@ -118,6 +124,25 @@ int main(void)
 
   /* Write your code here */
   /* For example: for(;;) { } */
+
+
+  for(;;)
+  {
+	  // LAB 9,  LED
+//	  LEDPin1_SetVal();
+//	  WAIT1_Waitms(500);
+//	  LEDPin1_ClrVal();
+//	  WAIT1_Waitms(500);
+//	  LEDPin2_SetVal();
+//	  WAIT1_Waitms(500);
+//	  LEDPin2_ClrVal();
+//	  WAIT1_Waitms(500);
+
+
+  }
+
+
+
 #if 0
   f();
   *((int*)0) = 5;
