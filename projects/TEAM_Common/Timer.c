@@ -9,7 +9,6 @@
 #include "Platform.h"
 #if PL_CONFIG_HAS_TIMER
 #include "Timer.h"
-#include "LED.h"
 #if PL_CONFIG_HAS_EVENTS
   #include "Event.h"
 #endif
@@ -27,21 +26,12 @@ void TMR_OnInterrupt(void) {
   static unsigned int cntr = 0;
   /* this one gets called from an interrupt!!!! */
   /*! \todo Add code for a blinking LED here */
-
-  if(cntr=100){
-  LEDPin1_SetVal();
-
-  LEDPin1_ClrVal();
-
-  cntr=0;
 }
-cntr ++;}
+
 void TMR_Init(void) {
 }
 
 void TMR_Deinit(void) {
-
 }
-
 
 #endif /* PL_CONFIG_HAS_TIMER*/
