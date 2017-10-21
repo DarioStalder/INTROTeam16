@@ -184,6 +184,8 @@ void APP_Start(void) {
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
   for(;;) {
+	  // DZ write example code of the applicatiion here, not in the main methode
+
   }
 }
 

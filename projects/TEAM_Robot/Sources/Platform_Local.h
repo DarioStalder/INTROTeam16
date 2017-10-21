@@ -27,9 +27,11 @@
   #define PL_LOCAL_CONFIG_KEY_6_ISR         (0) /* if SW6 is using interrupts */
   #define PL_LOCAL_CONFIG_KEY_7_ISR         (0) /* if SW7 is using interrupts */
 #endif
+// DZ if you don't define the makro with a number like 1 or 0, you can save textual replacement, that
+// means you can save data space, because the preprocessor doen'st write it down
 
 /* set of defines to disable a functionality: if it is defined, it will disable it in the common part */
-#define PL_LOCAL_CONFIG_HAS_LEDS_DISABLED                 /* disable LEDs */
+// #define PL_LOCAL_CONFIG_HAS_LEDS_DISABLED                 /* disable LEDs */
 #define PL_LOCAL_CONFIG_HAS_EVENTS_DISABLED               /* disable events */
 #define PL_LOCAL_CONFIG_HAS_TIMER_DISABLED                /* disable own timer */
 #define PL_LOCAL_CONFIG_HAS_KEYS_DISABLED                 /* disable key/push buttons */
