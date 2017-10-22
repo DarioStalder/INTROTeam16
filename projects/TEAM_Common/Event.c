@@ -29,17 +29,29 @@ static EVNT_MemUnit EVNT_Events[((EVNT_NOF_EVENTS-1)/EVNT_MEM_UNIT_NOF_BITS)+1];
 
 void EVNT_SetEvent(EVNT_Handle event) {
   /*! \todo Make it reentrant */
+	// DZ the default EnterCritical use already an Critical Variable in the implementation
+	// you don't need a Variable anymore, watch if the squarebox in the CS component is selected
+  EnterCritical();
   SET_EVENT(event);
+  ExitCritical();
+
+
 }
 
 void EVNT_ClearEvent(EVNT_Handle event) {
   /*! \todo Make it reentrant */
+  EnterCritical();
   CLR_EVENT(event);
+  ExitCritical();
 }
 
 bool EVNT_EventIsSet(EVNT_Handle event) {
   /*! \todo Make it reentrant */
-   return GET_EVENT(event);
+	// you can't use the makro in one line, you need a local variable to implement this function correct
+    EnterCritical();
+	EVNT_Handle temp = event;
+	ExitCritical();
+   return;
 }
 
 bool EVNT_EventIsSetAutoClear(EVNT_Handle event) {
@@ -57,6 +69,8 @@ void EVNT_HandleEvent(void (*callback)(EVNT_Handle), bool clearEvent) {
    /* Handle the one with the highest priority. Zero is the event with the highest priority. */
    EVNT_Handle event;
    /*! \todo Make it reentrant */
+   // DZ here you had to embrace the the whole implementation, because it's one unit
+   EnterCritical();
    for (event=(EVNT_Handle)0; event<EVNT_NOF_EVENTS; event++) { /* does a test on every event */
      if (GET_EVENT(event)) { /* event present? */
        if (clearEvent) {
@@ -65,6 +79,7 @@ void EVNT_HandleEvent(void (*callback)(EVNT_Handle), bool clearEvent) {
        break; /* get out of loop */
      }
    }
+   ExitCritical();
    if (event != EVNT_NOF_EVENTS) {
      callback(event);
      /* Note: if the callback sets the event, we will get out of the loop.

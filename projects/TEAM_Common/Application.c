@@ -179,14 +179,26 @@ static void APP_AdoptToHardware(void) {
 #endif
 }
 
+
+
+// DZ write example code of the applicatiion here, not in the main methode
+// HARD FAULT EXAMPLE
+void (*f)(void);
+void call_null_pointer_function(void) {
+  f(); /* will execute code at address zero */
+}
+void write_to_rom(void) {
+  *((int*)0x0) = 10; /* tries to write to address zero */
+}
+
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
   for(;;) {
-	  // DZ write example code of the applicatiion here, not in the main methode
+
+	  }
 
   }
-}
 
 
