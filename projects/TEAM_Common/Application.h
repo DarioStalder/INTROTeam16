@@ -19,4 +19,12 @@ void APP_EventHandler(EVNT_Handle event);
 
 void APP_Start(void);
 
+void APP_HandleEvent(void (*callback)(EVNT_Handle), bool clearEvent);
+
+// DZ Header declaration of the HARD FAULT functions;
+void (*f)(void);
+void call_null_pointer_function(void); /* will execute code at address zero */
+void write_to_rom(void); /* tries to write to address zero */
+
+
 #endif /* SOURCES_FS2016_COMMON_APPLICATION_H_ */

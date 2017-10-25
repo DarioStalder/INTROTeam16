@@ -34,8 +34,6 @@ void EVNT_SetEvent(EVNT_Handle event) {
   EnterCritical();
   SET_EVENT(event);
   ExitCritical();
-
-
 }
 
 void EVNT_ClearEvent(EVNT_Handle event) {
@@ -47,7 +45,7 @@ void EVNT_ClearEvent(EVNT_Handle event) {
 
 bool EVNT_EventIsSet(EVNT_Handle event) {
   /*! \todo Make it reentrant */
-	// you can't use the makro in one line, you need a local variable to implement this function correct
+	// DZ you can't use the makro in one line, you need a local variable to implement this function correct
     EnterCritical();
 	EVNT_Handle temp = event;
 	ExitCritical();

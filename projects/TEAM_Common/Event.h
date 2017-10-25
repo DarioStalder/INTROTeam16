@@ -98,6 +98,7 @@ void EVNT_Init(void);
 /*! \brief Event module de-initialization */
 void EVNT_Deinit(void);
 
+
 #endif /* PL_HAS_EVENTS */
 
 

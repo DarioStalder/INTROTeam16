@@ -180,6 +180,11 @@ static void APP_AdoptToHardware(void) {
 }
 
 
+// DZ LAB 13: APP_Handlevent übergibt EVNT_HandleEvent die Funktion
+void APP_HandleEvent(void (*callback)(EVNT_Handle), bool clearEvent) {
+
+EVNT_HandleEvent(callback, clearEvent);
+}
 
 // DZ write example code of the applicatiion here, not in the main methode
 // HARD FAULT EXAMPLE
@@ -190,15 +195,16 @@ void call_null_pointer_function(void) {
 void write_to_rom(void) {
   *((int*)0x0) = 10; /* tries to write to address zero */
 }
-
+// DZ write here your test application code
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
+  EVNT_Init();
   for(;;) {
+
 
 	  }
 
   }
-
 
