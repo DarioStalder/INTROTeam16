@@ -98,11 +98,6 @@ void APP_EventHandler(EVNT_Handle event) {
     LED2_Neg();
      break;
 #endif
-#if PL_CONFIG_NOF_KEYS>=1
-  case EVNT_SW1_PRESSED:
-     BtnMsg(1, "pressed");
-     break;
-#endif
 #if PL_CONFIG_NOF_KEYS>=2
   case EVNT_SW2_PRESSED:
      BtnMsg(2, "pressed");
