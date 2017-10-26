@@ -95,6 +95,42 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
+    LED2_Neg();
+     break;
+#endif
+#if PL_CONFIG_NOF_KEYS>=1
+  case EVNT_SW1_PRESSED:
+     BtnMsg(1, "pressed");
+     break;
+#endif
+#if PL_CONFIG_NOF_KEYS>=2
+  case EVNT_SW2_PRESSED:
+     BtnMsg(2, "pressed");
+     break;
+#endif
+#if PL_CONFIG_NOF_KEYS>=3
+  case EVNT_SW3_PRESSED:
+     BtnMsg(3, "pressed");
+     break;
+#endif
+#if PL_CONFIG_NOF_KEYS>=4
+  case EVNT_SW4_PRESSED:
+     BtnMsg(4, "pressed");
+     break;
+#endif
+#if PL_CONFIG_NOF_KEYS>=5
+  case EVNT_SW5_PRESSED:
+     BtnMsg(5, "pressed");
+     break;
+#endif
+#if PL_CONFIG_NOF_KEYS>=6
+  case EVNT_SW6_PRESSED:
+     BtnMsg(6, "pressed");
+     break;
+#endif
+#if PL_CONFIG_NOF_KEYS>=7
+  case EVNT_SW7_PRESSED:
+     BtnMsg(7, "pressed");
      break;
 #endif
     default:
@@ -200,8 +236,11 @@ void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
-  EVNT_Init();
+ // __asm volatile("cpsie i"); /* enable interrupts */
+
+
   for(;;) {
+   APP_HandleEvent(APP_EventHandler, TRUE);
 
 
 	  }

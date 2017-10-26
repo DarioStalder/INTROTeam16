@@ -27,7 +27,7 @@ void TMR_OnInterrupt(void) {
   /* this one gets called from an interrupt!!!! */
   /*! \todo Add code for a blinking LED here */
   // DZ LAB 14 if the interrupt started, LED blinks
-   if (cntr <  100*TMR_TICK_MS)
+   if (cntr <  1000/TMR_TICK_MS)
    { }
    else {
     EVNT_SetEvent(EVNT_LED_HEARTBEAT);

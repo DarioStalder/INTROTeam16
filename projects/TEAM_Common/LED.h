@@ -22,7 +22,7 @@
 #if PL_CONFIG_NOF_LEDS>=3
   #include "LEDPin3.h"
 #endif
-// DZ THE ## are only to reducd code duplication
+// DZ THE ## are only to reduce code duplication
 #if PL_CONFIG_NOF_LEDS>=1
   #define LED_On(nr)      LEDPin##nr##_ClrVal()
   #define LED_Off(nr)     LEDPin##nr##_SetVal()
