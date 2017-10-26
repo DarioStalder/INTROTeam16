@@ -90,42 +90,48 @@ void APP_EventHandler(EVNT_Handle event) {
       LED1_Off();
     }
   case EVNT_LED_HEARTBEAT:
-    LED2_Neg();
+    LED1_Neg();
     break;
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
-    LED2_Neg();
+    LED1_Neg();
      break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=2
   case EVNT_SW2_PRESSED:
      BtnMsg(2, "pressed");
+     LED1_Neg();
      break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=3
   case EVNT_SW3_PRESSED:
      BtnMsg(3, "pressed");
+     LED1_Neg();
      break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=4
   case EVNT_SW4_PRESSED:
      BtnMsg(4, "pressed");
+     LED1_Neg();
      break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=5
   case EVNT_SW5_PRESSED:
      BtnMsg(5, "pressed");
+     LED1_Neg();
      break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=6
   case EVNT_SW6_PRESSED:
      BtnMsg(6, "pressed");
+     LED1_Neg();
      break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=7
   case EVNT_SW7_PRESSED:
      BtnMsg(7, "pressed");
+     LED1_Neg();
      break;
 #endif
     default:
@@ -235,7 +241,9 @@ void APP_Start(void) {
 
 
   for(;;) {
-   APP_HandleEvent(APP_EventHandler, TRUE);
+	  KEY_Scan();
+	  APP_HandleEvent(APP_EventHandler, TRUE);
+
 
 
 	  }
