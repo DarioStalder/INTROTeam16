@@ -244,9 +244,6 @@ void APP_Start(void) {
 	  KEY_Scan();
 	  APP_HandleEvent(APP_EventHandler, TRUE);
 
-
-
-	  }
-
   }
+}
 

@@ -33,12 +33,12 @@
 //#define PL_LOCAL_CONFIG_HAS_EVENTS_DISABLED               /* disable events */
 //#define PL_LOCAL_CONFIG_HAS_TIMER_DISABLED                /* disable own timer */
 //#define PL_LOCAL_CONFIG_HAS_KEYS_DISABLED                 /* disable key/push buttons */
-#define PL_LOCAL_CONFIG_HAS_SHELL_DISABLED                /* disable shell */
+//#define PL_LOCAL_CONFIG_HAS_SHELL_DISABLED                /* disable shell */
 #define PL_LOCAL_CONFIG_HAS_TRIGGER_DISABLED              /* disable triggers */
 #define PL_LOCAL_CONFIG_HAS_DEBOUNCE_DISABLED             /* disable debouncing */
 #define PL_LOCAL_CONFIG_HAS_RTOS_DISABLED                 /* disable RTOS usage */
 #define PL_LOCAL_CONFIG_HAS_USB_CDC_DISABLED              /* disable USB CDC */
-#define PL_LOCAL_CONFIG_HAS_SEGGER_RTT_DISABLED           /* disable Segger RTT */
+//#define PL_LOCAL_CONFIG_HAS_SEGGER_RTT_DISABLED           /* disable Segger RTT */
 #define PL_LOCAL_CONFIG_HAS_SHELL_QUEUE_DISABLED          /* disable shell queue */
 #define PL_LOCAL_CONFIG_HAS_SQUEUE_SINGLE_CHAR_DISABLED   /* disable single character support in shell queue */
 #define PL_LOCAL_CONFIG_HAS_SEMAPHORE_DISABLED            /* disable semaphore test module */
