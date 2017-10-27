@@ -32,6 +32,7 @@ void TMR_OnInterrupt(void) {
    else {
     EVNT_SetEvent(EVNT_LED_HEARTBEAT);
     cntr = 0;			}
+   TRG_AddTick();
 }
 
 void TMR_Init(void) {

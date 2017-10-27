@@ -239,10 +239,10 @@ void APP_Start(void) {
   __asm volatile("cpsie i"); /* enable interrupts */
  // __asm volatile("cpsie i"); /* enable interrupts */
 
-
   for(;;) {
 	  KEY_Scan();
 	  APP_HandleEvent(APP_EventHandler, TRUE);
+	  BUZ_PlayTune(BUZ_TUNE_BUTTON);
 
   }
 }
