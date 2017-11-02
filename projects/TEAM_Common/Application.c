@@ -96,6 +96,8 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
     LED1_Neg();
+    //CLS1_SendStr("Hello World!\r\n", CLS1_GetStdio()->stdOut);
+    //BUZ_PlayTune(BUZ_TUNE_BUTTON);
      break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=2
@@ -242,7 +244,9 @@ void APP_Start(void) {
   for(;;) {
 	  KEY_Scan();
 	  APP_HandleEvent(APP_EventHandler, TRUE);
-	  BUZ_PlayTune(BUZ_TUNE_BUTTON);
+
+	  //CLS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
+	  // WAIT1_WaitOSms(500);
 
   }
 }
