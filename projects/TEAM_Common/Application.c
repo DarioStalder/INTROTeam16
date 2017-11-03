@@ -96,8 +96,9 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
     LED1_Neg();
-    //CLS1_SendStr("Hello World!\r\n", CLS1_GetStdio()->stdOut);
-    //BUZ_PlayTune(BUZ_TUNE_BUTTON);
+    CLS1_SendStr("Hello World!\r\n", CLS1_GetStdio()->stdOut);
+    BUZ_PlayTune(BUZ_TUNE_WELCOME);
+
      break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=2
@@ -242,11 +243,15 @@ void APP_Start(void) {
  // __asm volatile("cpsie i"); /* enable interrupts */
 
   for(;;) {
-	  KEY_Scan();
+	  //CLS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
+	#if PL_CONFIG_HAS_DEBOUNCE
+	  	KEYDBNC_Process();
+   #else
+	  KEY_Scan();/* scan keys and set events */
+	#endif
 	  APP_HandleEvent(APP_EventHandler, TRUE);
 
-	  //CLS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
-	  // WAIT1_WaitOSms(500);
+	  // WAIT1_WaitOSms(50);
 
   }
 }

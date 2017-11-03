@@ -49,7 +49,7 @@ bool EVNT_EventIsSet(EVNT_Handle event) {
     EnterCritical();
 	EVNT_Handle temp = event;
 	ExitCritical();
-   return;
+   return temp;
 }
 
 bool EVNT_EventIsSetAutoClear(EVNT_Handle event) {

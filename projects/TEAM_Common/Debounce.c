@@ -57,7 +57,7 @@ void DBNC_Process(DBNC_FSMData *data) {
           (void)TRG_SetTrigger(data->trigger, data->debounceTicks, (TRG_Callback)DBNC_Process, (void*)data); /* continue waiting */
           return;
         } else if (keys==0) { /* all keys are released */
-#if 0 /* \todo call event here if you want to be notified when button is released */
+#if 1 /* \todo call event here if you want to be notified when button is released */
           if (data->longKeyCnt!=0) { /* zero means we already issued the long button press message */
             data->onDebounceEvent(DBNC_EVENT_PRESSED, data->scanValue); /* we have a key press: call event handler  */
           }

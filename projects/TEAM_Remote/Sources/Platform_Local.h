@@ -35,7 +35,7 @@
 //#define PL_LOCAL_CONFIG_HAS_KEYS_DISABLED                 /* disable key/push buttons */
 //#define PL_LOCAL_CONFIG_HAS_SHELL_DISABLED                /* disable shell */
 //#define PL_LOCAL_CONFIG_HAS_TRIGGER_DISABLED              /* disable triggers */
-#define PL_LOCAL_CONFIG_HAS_DEBOUNCE_DISABLED             /* disable debouncing */
+//#define PL_LOCAL_CONFIG_HAS_DEBOUNCE_DISABLED             /* disable debouncing */
 #define PL_LOCAL_CONFIG_HAS_RTOS_DISABLED                 /* disable RTOS usage */
 #define PL_LOCAL_CONFIG_HAS_USB_CDC_DISABLED              /* disable USB CDC */
 //#define PL_LOCAL_CONFIG_HAS_SEGGER_RTT_DISABLED           /* disable Segger RTT */
