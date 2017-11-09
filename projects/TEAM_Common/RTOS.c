@@ -28,7 +28,6 @@ void RTOS_Init(void) {
   /*! \todo Create tasks here */
 	xTaskHandle taskHndl;
 	FRTOS1_xTaskCreate(BlinkyTask, "Blinky1", configMINIMAL_STACK_SIZE+50,NULL,1, &taskHndl);
-	FRTOS1_xTaskCreate(BlinkyTask2, "Blinky2", configMINIMAL_STACK_SIZE+50,NULL,1, &taskHndl);
 }
 
 void RTOS_Deinit(void) {

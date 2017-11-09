@@ -45,6 +45,7 @@
 #include "TU1.h"
 #include "CLS1.h"
 #include "RTT1.h"
+#include "SYS1.h"
 #include "TMOUT1.h"
 #include "USB1.h"
 #include "CDC1.h"
