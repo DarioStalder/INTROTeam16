@@ -38,6 +38,8 @@
 #include "BitIoLdd3.h"
 #include "AS1.h"
 #include "ASerialLdd3.h"
+#include "FRTOS1.h"
+#include "RTOSCNTRLDD1.h"
 #include "TI1.h"
 #include "TimerIntLdd1.h"
 #include "TU1.h"

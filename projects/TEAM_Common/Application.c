@@ -278,24 +278,30 @@ void call_null_pointer_function(void) {
 void write_to_rom(void) {
   *((int*)0x0) = 10; /* tries to write to address zero */
 }
+
+
+
+
+
+
 // DZ write here your test application code
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
  // __asm volatile("cpsie i"); /* enable interrupts */
+ //FRTOS1_vTaskStartScheduler();
 
-  for(;;) {
-	//C LS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
+for(;;) {
+	CLS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
 	#if PL_CONFIG_HAS_DEBOUNCE
 	  	KEYDBNC_Process();
    #else
 	  KEY_Scan();/* scan keys and set events */
 	#endif
 	  APP_HandleEvent(APP_EventHandler, TRUE);
-
-	  // WAIT1_WaitOSms(50);
-
+	   WAIT1_WaitOSms(50);
   }
+
 }
 
