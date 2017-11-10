@@ -26,5 +26,7 @@ void (*f)(void);
 void call_null_pointer_function(void); /* will execute code at address zero */
 void write_to_rom(void); /* tries to write to address zero */
 
+//DZ new function included blinky, App sTart
+
 
 #endif /* SOURCES_FS2016_COMMON_APPLICATION_H_ */
