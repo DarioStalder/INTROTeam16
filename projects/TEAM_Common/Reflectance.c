@@ -150,7 +150,7 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
     SensorFctArray[i].SetVal(); /* put high */
     raw[i] = MAX_SENSOR_VALUE;
   }
-  WAIT1_Waitus(50); /* give at least 10 us to charge the capacitor */
+  WAIT1_Waitus(25); /* give at least 10 us to charge the capacitor */
   for(i=0;i<REF_NOF_SENSORS;i++) {
     SensorFctArray[i].SetInput(); /* turn I/O line as input */
   }
@@ -339,7 +339,7 @@ REF_LineKind REF_GetLineKind(void) {
 static void REF_Measure(void) {
   ReadCalibrated(SensorCalibrated, SensorRaw);
   refCenterLineVal = ReadLine(SensorCalibrated, SensorRaw, REF_USE_WHITE_LINE);
-#if 1 || PL_CONFIG_HAS_LINE_FOLLOW
+#if 0 || PL_CONFIG_HAS_LINE_FOLLOW
   refLineKind = ReadLineKind(SensorCalibrated);
 #endif
 }
