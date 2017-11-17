@@ -89,7 +89,7 @@ void TI1_OnInterrupt(void)
 */
 void SW5_OnInterrupt(void)
 {
-  /* Write your code here ... */
+	KEY_OnInterrupt(KEY_BTN5);
 }
 
 /*
@@ -106,7 +106,7 @@ void SW5_OnInterrupt(void)
 */
 void SW4_OnInterrupt(void)
 {
-  /* Write your code here ... */
+	KEY_OnInterrupt(KEY_BTN4);
 }
 
 /*
@@ -123,7 +123,7 @@ void SW4_OnInterrupt(void)
 */
 void SW3_OnInterrupt(void)
 {
-  /* Write your code here ... */
+	KEY_OnInterrupt(KEY_BTN3);
 }
 
 /*
@@ -140,7 +140,7 @@ void SW3_OnInterrupt(void)
 */
 void SW2_OnInterrupt(void)
 {
-  /* Write your code here ... */
+	KEY_OnInterrupt(KEY_BTN2);
 }
 
 /*
@@ -157,7 +157,7 @@ void SW2_OnInterrupt(void)
 */
 void SW1_OnInterrupt(void)
 {
-  /* Write your code here ... */
+ KEY_OnInterrupt(KEY_BTN1);
 }
 
 /*

@@ -84,6 +84,8 @@
 #include "LED.h"
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 
+
+//ds 17.11.2017
 int main(void)
 /*lint -restore Enable MISRA rule (6.3) checking. */
 {
@@ -92,8 +94,15 @@ int main(void)
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
+#if (PL_CONFIG_HAS_RTOS)
+  RTOS_APP_Start();
 
+#else
   APP_Start();
+
+#endif
+
+
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/

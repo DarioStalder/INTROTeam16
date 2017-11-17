@@ -19,7 +19,7 @@
 #define PL_LOCAL_CONFIG_NOF_KEYS          (1) /* number of keys, 0 to 7 */
 
 #if PL_LOCAL_CONFIG_NOF_KEYS>0
-  #define PL_LOCAL_CONFIG_KEY_1_ISR         (0) /* if SW1 is using interrupts */
+  #define PL_LOCAL_CONFIG_KEY_1_ISR         (1) /* if SW1 is using interrupts */
   #define PL_LOCAL_CONFIG_KEY_2_ISR         (0) /* if SW2 is using interrupts */
   #define PL_LOCAL_CONFIG_KEY_3_ISR         (0) /* if SW3 is using interrupts */
   #define PL_LOCAL_CONFIG_KEY_4_ISR         (0) /* if SW4 is using interrupts */

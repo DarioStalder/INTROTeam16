@@ -31,6 +31,8 @@ void EVNT_SetEvent(EVNT_Handle event) {
   /*! \todo Make it reentrant */
 	// DZ the default EnterCritical use already an Critical Variable in the implementation
 	// you don't need a Variable anymore, watch if the squarebox in the CS component is selected
+
+
   EnterCritical();
   SET_EVENT(event);
   ExitCritical();
@@ -38,6 +40,7 @@ void EVNT_SetEvent(EVNT_Handle event) {
 
 void EVNT_ClearEvent(EVNT_Handle event) {
   /*! \todo Make it reentrant */
+
   EnterCritical();
   CLR_EVENT(event);
   ExitCritical();
@@ -46,21 +49,27 @@ void EVNT_ClearEvent(EVNT_Handle event) {
 bool EVNT_EventIsSet(EVNT_Handle event) {
   /*! \todo Make it reentrant */
 	// DZ you can't use the makro in one line, you need a local variable to implement this function correct
-    EnterCritical();
-	EVNT_Handle temp = event;
+	bool isSet;
+	EnterCritical();
+	isSet = GET_EVENT(event);
 	ExitCritical();
-   return temp;
+	return isSet;
+
 }
 
 bool EVNT_EventIsSetAutoClear(EVNT_Handle event) {
   bool res;
 
   /*! \todo Make it reentrant */
+  EnterCritical();
   res = GET_EVENT(event);
   if (res) {
     CLR_EVENT(event); /* automatically clear event */
   }
+
+  ExitCritical();
   return res;
+
 }
 
 void EVNT_HandleEvent(void (*callback)(EVNT_Handle), bool clearEvent) {

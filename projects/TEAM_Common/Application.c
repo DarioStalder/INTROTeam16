@@ -88,17 +88,18 @@ void APP_EventHandler(EVNT_Handle event) {
         WAIT1_Waitms(50);
       }
       LED1_Off();
+#if PL_CONFIG_HAS_BUZZER
+	BUZ_PlayTune(BUZ_TUNE_WELCOME);
+#endif
     }
+    break;
   case EVNT_LED_HEARTBEAT:
     LED1_Neg();
     break;
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
-    LED1_Neg();
-	#if PL_CONFIG_HAS_BUZZER
-    	BUZ_PlayTune(BUZ_TUNE_WELCOME);
-	#endif
+    //LED1_Neg();
     break;
   case EVNT_SW1_LPRESSED:
     BtnMsg(1, "long pressed");
@@ -113,7 +114,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=2
   case EVNT_SW2_PRESSED:
      BtnMsg(2, "pressed");
-     LED1_Neg();
+     //LED1_Neg();
      break;
   case EVNT_SW2_LPRESSED:
      BtnMsg(2, "long pressed");
@@ -125,7 +126,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=3
   case EVNT_SW3_PRESSED:
      BtnMsg(3, "pressed");
-     LED1_Neg();
+     //LED1_Neg();
      break;
   case EVNT_SW3_LPRESSED:
       BtnMsg(3, "long pressed");
@@ -137,7 +138,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=4
   case EVNT_SW4_PRESSED:
      BtnMsg(4, "pressed");
-     LED1_Neg();
+     //LED1_Neg();
      break;
   case EVNT_SW4_LPRESSED:
       BtnMsg(4, "long pressed");
@@ -149,7 +150,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=5
   case EVNT_SW5_PRESSED:
      BtnMsg(5, "pressed");
-     LED1_Neg();
+     //LED1_Neg();
      break;
   case EVNT_SW5_LPRESSED:
       BtnMsg(5, "long pressed");
@@ -161,7 +162,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=6
   case EVNT_SW6_PRESSED:
      BtnMsg(6, "pressed");
-     LED1_Neg();
+     //LED1_Neg();
      break;
   case EVNT_SW6_LPRESSED:
       BtnMsg(6, "long pressed");
@@ -173,7 +174,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=7
   case EVNT_SW7_PRESSED:
      BtnMsg(7, "pressed");
-     LED1_Neg();
+     //LED1_Neg();
      break;
   case EVNT_SW7_LPRESSED:
       BtnMsg(7, "long pressed");
@@ -265,22 +266,29 @@ static void APP_AdoptToHardware(void) {
 }
 
 
+/*	ds (aufgeräumt 17.11.2017)
 // DZ LAB 13: APP_Handlevent übergibt EVNT_HandleEvent die Funktion
 void APP_HandleEvent(void (*callback)(EVNT_Handle), bool clearEvent) {
 
 EVNT_HandleEvent(callback, clearEvent);
 }
 
+*/
+
+/*	ds (aufgeräumt 17.11.2017)
 // DZ write example code of the applicatiion here, not in the main methode
 // HARD FAULT EXAMPLE
 void (*f)(void);
 void call_null_pointer_function(void) {
-  f(); /* will execute code at address zero */
+  f(); // will execute code at address zero
 }
-void write_to_rom(void) {
-  *((int*)0x0) = 10; /* tries to write to address zero */
-}
+*/
 
+/*  ds (aufgeräumt 17.11.2017)
+void write_to_rom(void) {
+  *((int*)0x0) = 10; // tries to write to address zero
+}
+*/
 
 
 
@@ -288,7 +296,12 @@ void write_to_rom(void) {
 
 // DZ write here your test application code
 void APP_Start(void) {
+	PL_Init(); // ds 17.11.2017
+	APP_AdoptToHardware();
+	  __asm volatile("cpsid i"); /* disable interrupts */
+	  __asm volatile("cpsie i"); /* enable interrupts */
 
+	  EVNT_SetEvent(EVNT_STARTUP);// Lässt bei Start-Up LED 5xBlinken
 	for(;;) {
 	CLS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
 	#if PL_CONFIG_HAS_DEBOUNCE
@@ -296,8 +309,9 @@ void APP_Start(void) {
   #else
 	  KEY_Scan();/* scan keys and set events */
 	#endif
+	  WAIT1_WaitOSms(50);
 	  APP_HandleEvent(APP_EventHandler, TRUE);
-	   WAIT1_WaitOSms(50);
+
   }
 }
 

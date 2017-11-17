@@ -180,7 +180,8 @@ void FRTOS1_vApplicationMallocFailedHook(void)
 */
 void SW1_OnInterrupt(void)
 {
-  /* Write your code here ... */
+
+  void KEY_OnInterrupt(KEY_BTN1);
 }
 
 /* END Events */
