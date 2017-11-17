@@ -72,6 +72,7 @@
 #include "IO_Map.h"
 /* User includes (#include below this line is not maintained by Processor Expert) */
 #include "Application.h"
+#include "RTOS.h"
 
 void (*f)(void) = NULL;
 int i;
@@ -95,7 +96,13 @@ int main(void)
     __asm("nop");
   }
 #endif
+
+/* DZ LAB 19 RTOS hinzugefügt, neue APP START METHODE	*/
+#if(PL_CONFIG_HAS_RTOS)
+  RTOS_APP_Start();
+#else
   APP_Start();
+#endif
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
   #ifdef PEX_RTOS_START

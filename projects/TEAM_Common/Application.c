@@ -102,7 +102,9 @@ void APP_EventHandler(EVNT_Handle event) {
     break;
   case EVNT_SW1_LPRESSED:
     BtnMsg(1, "long pressed");
+#if PL_CONFIG_HAS_BUZZER
     BUZ_PlayTune(BUZ_TUNE_BUTTON_LONG);
+#endif
      break;
   case EVNT_SW1_RELEASED:
     BtnMsg(1, "released");
@@ -286,22 +288,28 @@ void write_to_rom(void) {
 
 // DZ write here your test application code
 void APP_Start(void) {
-  PL_Init();
-  APP_AdoptToHardware();
- // __asm volatile("cpsie i"); /* enable interrupts */
- // __asm volatile("cpsie i"); /* enable interrupts */
- FRTOS1_vTaskStartScheduler();
 
-//for(;;) {
-//	CLS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
-//	#if PL_CONFIG_HAS_DEBOUNCE
-//	  	KEYDBNC_Process();
-//  #else
-//	  KEY_Scan();/* scan keys and set events */
-//	#endif
-//	  APP_HandleEvent(APP_EventHandler, TRUE);
-//	   WAIT1_WaitOSms(50);
-//  }
+	for(;;) {
+	CLS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
+	#if PL_CONFIG_HAS_DEBOUNCE
+	  	KEYDBNC_Process();
+  #else
+	  KEY_Scan();/* scan keys and set events */
+	#endif
+	  APP_HandleEvent(APP_EventHandler, TRUE);
+	   WAIT1_WaitOSms(50);
+  }
+}
+
+// DZ Created new Application for RTOS
+void RTOS_APP_Start(void) {
+	PL_Init();
+	  APP_AdoptToHardware();
+	  __asm volatile("cpsid i"); /* disable interrupts */
+	  __asm volatile("cpsie i"); /* enable interrupts */
+	 EVNT_SetEvent(EVNT_STARTUP);
+	 FRTOS1_vTaskStartScheduler();
 
 }
+
 
