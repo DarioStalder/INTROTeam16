@@ -75,6 +75,9 @@ static void BtnMsg(int btn, const char *msg) {
     CLS1_SendStr("\r\n", CLS1_GetStdio()->stdOut);
   #endif
 #endif
+#if PL_CONFIG_HAS_BUZZER
+    BUZ_PlayTune(BUZ_TUNE_BUTTON);	//ds 19.11.2017
+#endif
 }
 
 void APP_EventHandler(EVNT_Handle event) {
@@ -94,7 +97,7 @@ void APP_EventHandler(EVNT_Handle event) {
     }
     break;
   case EVNT_LED_HEARTBEAT:
-    LED1_Neg();
+    LED2_Neg();
     break;
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
