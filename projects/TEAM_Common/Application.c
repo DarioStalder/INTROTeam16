@@ -327,6 +327,22 @@ void RTOS_APP_Start(void) {
 	 EVNT_SetEvent(EVNT_STARTUP);
 	 FRTOS1_vTaskStartScheduler();
 
+	  for(;;) {
+	//    CLS1_SendStr("Hello World!\r\n", CLS1_GetStdio()->stdOut);
+	   // TestCS();
+	 //   LED1_On();
+	  //  LED2_On();
+	    __asm volatile("nop");
+	    //LED2_Off();
+	    //LED1_Off();
+	#if PL_CONFIG_HAS_DEBOUNCE
+	    KEYDBNC_Process();
+	#else
+	    KEY_Scan();  scan keys and set events
+	#endif
+	    WAIT1_WaitOSms(50);
+	    EVNT_HandleEvent(APP_EventHandler, TRUE);
+	  }
 }
 
 

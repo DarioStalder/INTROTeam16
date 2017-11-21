@@ -18,7 +18,6 @@
 static void AppTask(void *pvParameters){
 	for (;;) {
 #if PL_CONFIG_HAS_DEBOUNCE
-    KEYDBNC_Process();
 #else
     KEY_Scan(); /* scan keys and set events */
 #endif
@@ -51,9 +50,9 @@ void RTOS_Init(void) {
 #if (PL_LOCAL_CONFIG_BOARD_IS_ROBO)
 	xTaskCreate(BlinkyTask2, "Blinky2", 200/sizeof(StackType_t), NULL, 1,&taskHndl);
 #endif
-if (xTaskCreate(AppTask, "App", 200/sizeof(StackType_t), NULL, tskIDLE_PRIORITY, NULL)!=pdPASS) {
-	    for(;;) {} /* error? */
-	  }
+/*if (xTaskCreate(AppTask, "App", 200/sizeof(StackType_t), NULL, tskIDLE_PRIORITY, NULL)!=pdPASS) {
+	    for(;;) {}  error?
+	  }*/
 
 }
 
