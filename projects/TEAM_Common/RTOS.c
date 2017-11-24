@@ -46,10 +46,10 @@ vTaskDelay (500/ portTICK_PERIOD_MS);
 void RTOS_Init(void) {
   /*! \todo Create tasks here */
 	xTaskHandle taskHndl;
-	xTaskCreate(BlinkyTask, "Blinky", 200/sizeof(StackType_t), NULL, 1,&taskHndl);
+	/*xTaskCreate(BlinkyTask, "Blinky", 200/sizeof(StackType_t), NULL, 1,&taskHndl);
 #if (PL_LOCAL_CONFIG_BOARD_IS_ROBO)
-	xTaskCreate(BlinkyTask2, "Blinky2", 200/sizeof(StackType_t), NULL, 1,&taskHndl);
-#endif
+	xTaskCreate(BlinkyTask2, "Blinky2", 200/sizeof(StackType_t), NULL, 1,&taskHndl);*/
+//#endif
 /*if (xTaskCreate(AppTask, "App", 200/sizeof(StackType_t), NULL, tskIDLE_PRIORITY, NULL)!=pdPASS) {
 	    for(;;) {}  error?
 	  }*/
