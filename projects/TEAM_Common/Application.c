@@ -84,17 +84,14 @@ void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
   switch(event) {
   case EVNT_STARTUP:
-    {
-      int i;
-      for (i=0;i<5;i++) {
-        LED1_Neg();
-        WAIT1_Waitms(50);
-      }
-      LED1_Off();
-#if PL_CONFIG_HAS_BUZZER
-	BUZ_PlayTune(BUZ_TUNE_WELCOME);
-#endif
-    }
+      //{
+      //int i;
+      //for (i=0;i<5;i++) {
+      //  LED1_Neg();
+      //  WAIT1_Waitms(50);
+      //}
+      //LED1_Off();
+	  BUZ_PlayTune(BUZ_TUNE_BUTTON);
     break;
   case EVNT_LED_HEARTBEAT:
     LED2_Neg();
@@ -292,12 +289,46 @@ void write_to_rom(void) {
   *((int*)0x0) = 10; // tries to write to address zero
 }
 */
+/* DZ von Coco übernommmen, 25.11.2017 */
+
+void Key_Task(void * pvParameters) {
+	//TickType_t xLastWakeTime = xTaskGetTickCount();
+	//if (res != pdPASS){}
+	//vTaskDelay(2000/portTICK_PERIOD_MS);
+	//vTaskDelete(taskHndl);
+	for (;;) {
+		KEYDBNC_Process();
+		vTaskDelay(100 / portTICK_PERIOD_MS);
+	}
+}
+void Event_Task(void * pvParameters) {
+	//TickType_t xLastWakeTime = xTaskGetTickCount();
+	//if (res != pdPASS){}
+	//vTaskDelay(2000/portTICK_PERIOD_MS);
+	//vTaskDelete(taskHndl);
+	for (;;) {
+		EVNT_HandleEvent(APP_EventHandler, TRUE);
+		vTaskDelay(50 / portTICK_PERIOD_MS);
+	}
+}
+
+void BlinkyTask(void *pvParameters) {
+	for (;;) {
+		vTaskDelay(500 / portTICK_PERIOD_MS);
+		LED1_Neg();
+	}
+}
+void BlinkyTask2(void *pvParameters) {
+	for (;;) {
+		LED2_Neg();
+		vTaskDelay(500 / portTICK_PERIOD_MS);
+	}
+}
 
 
 
 
-
-// DZ write here your test application code
+// DZ write here your test application code (without RTOS)
 void APP_Start(void) {
 	PL_Init(); // ds 17.11.2017
 	APP_AdoptToHardware();
@@ -306,7 +337,7 @@ void APP_Start(void) {
 
 	  EVNT_SetEvent(EVNT_STARTUP);// Lässt bei Start-Up LED 5xBlinken
 	for(;;) {
-	CLS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
+	//CLS1_SendCharFct("Button pressed", CLS1_GetStdio()->stdOut);
 	#if PL_CONFIG_HAS_DEBOUNCE
 	  	KEYDBNC_Process();
   #else
@@ -325,24 +356,6 @@ void RTOS_APP_Start(void) {
 	  __asm volatile("cpsid i"); /* disable interrupts */
 	  __asm volatile("cpsie i"); /* enable interrupts */
 	 EVNT_SetEvent(EVNT_STARTUP);
-	 FRTOS1_vTaskStartScheduler();
-
-	  for(;;) {
-	//    CLS1_SendStr("Hello World!\r\n", CLS1_GetStdio()->stdOut);
-	   // TestCS();
-	 //   LED1_On();
-	  //  LED2_On();
-	    __asm volatile("nop");
-	    //LED2_Off();
-	    //LED1_Off();
-	#if PL_CONFIG_HAS_DEBOUNCE
-	    KEYDBNC_Process();
-	#else
-	    KEY_Scan();  scan keys and set events
-	#endif
-	    WAIT1_WaitOSms(50);
-	    EVNT_HandleEvent(APP_EventHandler, TRUE);
-	  }
+//	 FRTOS1_vTaskStartScheduler();		//wird in main ausgeführt RTOS_PEX_START
 }
-
 
