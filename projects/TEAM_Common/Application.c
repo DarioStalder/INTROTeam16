@@ -222,13 +222,13 @@ static void APP_AdoptToHardware(void) {
 #endif
 	 // no change needed
 	MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), TRUE); /* invert right motor */
-	(void)Q4CLeft_SwapPins(TRUE);
+	(void)Q4CRight_SwapPins(TRUE);
 	// no swap
  } else if (KIN1_UIDSame(&id, &RoboIDs[1])) { /* V2 L21 */
 	MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), FALSE); /* invert left motor */
 	MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), TRUE); /* invert right motor */
 	(void)Q4CRight_SwapPins(TRUE);
-	(void)Q4CLeft_SwapPins(TRUE);
+
 
 
   } else if (KIN1_UIDSame(&id, &RoboIDs[2])) { /* V1 L4 */

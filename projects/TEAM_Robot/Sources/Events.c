@@ -122,6 +122,10 @@ void FRTOS1_vApplicationTickHook(void)
 {
   /* Called for every RTOS tick. */
   /* Write your code here ... */
+#if PL_CONFIG_HAS_MOTOR_TACHO
+	TACHO_Sample();
+#endif
+
 }
 
 /*
@@ -202,8 +206,12 @@ void SW1_OnInterrupt(void)
 void QuadInt_OnInterrupt(void)
 {
   /* Write your code here ... */
+
+#if PL_CONFIG_HAS_QUADRATURE
 	Q4CLeft_Sample();
 	Q4CRight_Sample();
+#endif
+
 	//TACHO_Sample();
 
 }

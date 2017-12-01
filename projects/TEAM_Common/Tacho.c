@@ -18,7 +18,7 @@
 #include "FRTOS1.h"
 #include "Timer.h"
 
-#define TACHO_SAMPLE_PERIOD_MS (100)
+#define TACHO_SAMPLE_PERIOD_MS (50)
   /*!< \todo speed sample period in ms. Make sure that speed is sampled at the given rate. */
 #define NOF_HISTORY (2U+1U)
   /*!< number of samples for speed calculation (>0):the more, the better, but the slower. */
