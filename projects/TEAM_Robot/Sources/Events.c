@@ -29,6 +29,7 @@
 #include "Cpu.h"
 #include "Events.h"
 #include "Timer.h"
+#include "Tacho.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -201,6 +202,10 @@ void SW1_OnInterrupt(void)
 void QuadInt_OnInterrupt(void)
 {
   /* Write your code here ... */
+	Q4CLeft_Sample();
+	Q4CRight_Sample();
+	//TACHO_Sample();
+
 }
 
 /* END Events */
