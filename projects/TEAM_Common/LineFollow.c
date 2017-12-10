@@ -89,6 +89,9 @@ static void StateMachine(void) {
 
   switch (LF_currState) {
     case STATE_IDLE:
+
+
+    	LF_curr
       break;
 
     case STATE_FOLLOW_SEGMENT:
