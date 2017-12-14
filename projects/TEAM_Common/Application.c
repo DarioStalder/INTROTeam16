@@ -15,6 +15,8 @@
 #include "KeyDebounce.h"
 #include "CLS1.h"
 #include "KIN1.h"
+
+#include "LineFollow.h"
 #if PL_CONFIG_HAS_KEYS
   #include "Keys.h"
 #endif
@@ -80,6 +82,8 @@ static void BtnMsg(int btn, const char *msg) {
 #endif
 }
 
+int calibflag = 0;
+
 void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
   switch(event) {
@@ -99,10 +103,24 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
-    //LED1_Neg();
+    if(calibflag == 0 || calibflag == 1)
+    {
+    REF_CalibrateStartStop();
+    }
+    if(calibflag == 2)
+    {
+    	LF_StartFollowing();
+    }
+    if(calibflag == 3)
+    {
+    	LF_StopFollowing();
+    }
+    calibflag++;
+
     break;
   case EVNT_SW1_LPRESSED:
     BtnMsg(1, "long pressed");
+
 #if PL_CONFIG_HAS_BUZZER
     BUZ_PlayTune(BUZ_TUNE_BUTTON_LONG);
 #endif

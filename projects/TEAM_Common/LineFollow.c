@@ -76,7 +76,7 @@ static bool FollowSegment(void) {
 
   currLine = REF_GetLineValue();
   currLineKind = REF_GetLineKind();
-  if (currLineKind==REF_LINE_STRAIGHT) {
+  if (currLineKind==REF_LINE_STRAIGHT || currLineKind==REF_LINE_RIGHT || currLineKind==REF_LINE_LEFT ) {
     PID_Line(currLine, REF_MIDDLE_LINE_VALUE); /* move along the line */
     return TRUE;
   } else {
@@ -91,7 +91,6 @@ static void StateMachine(void) {
     case STATE_IDLE:
 
 
-    	LF_curr
       break;
 
     case STATE_FOLLOW_SEGMENT:
@@ -104,9 +103,10 @@ static void StateMachine(void) {
 
     case STATE_TURN:
       lineKind = REF_GetLineKind();
-      if (lineKind==REF_LINE_FULL) {
+      if (lineKind==REF_LINE_NONE) {
         LF_currState = STATE_FINISHED;
-      } if (lineKind==REF_LINE_NONE) {
+      }
+      if (lineKind==REF_LINE_FULL) {
         TURN_Turn(TURN_LEFT180, NULL);
         DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
         LF_currState = STATE_FOLLOW_SEGMENT;
@@ -121,7 +121,7 @@ static void StateMachine(void) {
       break;
 
     case STATE_STOP:
-#if 1
+#if 0
       RNETA_SendSignal('C'); /*! \todo */
 #endif
       SHELL_SendString("Stopped!\r\n");
@@ -142,7 +142,7 @@ static void LineTask (void *pvParameters) {
   for(;;) {
     (void)xTaskNotifyWait(0UL, LF_START_FOLLOWING|LF_STOP_FOLLOWING, &notifcationValue, 0); /* check flags */
     if (notifcationValue&LF_START_FOLLOWING) {
-#if 1
+#if 0
       RNETA_SendSignal('B'); /*! \todo */
 #endif
       DRV_SetMode(DRV_MODE_NONE); /* disable any drive mode */

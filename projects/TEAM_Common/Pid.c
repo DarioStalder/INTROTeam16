@@ -470,12 +470,12 @@ void PID_Init(void) {
   config.speedRightConfig.iAntiWindup = config.speedLeftConfig.iAntiWindup;
   config.speedRightConfig.lastError = 0;
   config.speedRightConfig.integral = 0;
-
-  config.lineFwConfig.pFactor100 = 0;
-  config.lineFwConfig.iFactor100 = 0;
+  // übernommen vn pilu
+  config.lineFwConfig.pFactor100 = 500;
+  config.lineFwConfig.iFactor100 = 20;
   config.lineFwConfig.dFactor100 = 0;
-  config.lineFwConfig.iAntiWindup = 0;
-  config.lineFwConfig.maxSpeedPercent = 0;
+  config.lineFwConfig.iAntiWindup = 50;
+  config.lineFwConfig.maxSpeedPercent = 30;
   config.lineFwConfig.lastError = 0;
   config.lineFwConfig.integral = 0;
 
