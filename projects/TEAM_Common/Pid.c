@@ -460,7 +460,7 @@ void PID_Init(void) {
   config.speedLeftConfig.iFactor100 = 31;
   config.speedLeftConfig.dFactor100 = 0;
   config.speedLeftConfig.iAntiWindup = 100000;
-  config.speedLeftConfig.maxSpeedPercent = 0;
+  config.speedLeftConfig.maxSpeedPercent = 50;
   config.speedLeftConfig.lastError = 0;
   config.speedLeftConfig.integral = 0;
 
@@ -473,17 +473,17 @@ void PID_Init(void) {
   // übernommen vn pilu
   config.lineFwConfig.pFactor100 = 500;
   config.lineFwConfig.iFactor100 = 20;
-  config.lineFwConfig.dFactor100 = 0;
+  config.lineFwConfig.dFactor100 = 20;
   config.lineFwConfig.iAntiWindup = 50;
-  config.lineFwConfig.maxSpeedPercent = 30;
+  config.lineFwConfig.maxSpeedPercent = 40;
   config.lineFwConfig.lastError = 0;
   config.lineFwConfig.integral = 0;
 
   config.posLeftConfig.pFactor100 = 50;
   config.posLeftConfig.iFactor100 = 1;
-  config.posLeftConfig.dFactor100 = 0;
+  config.posLeftConfig.dFactor100 = 1;
   config.posLeftConfig.iAntiWindup = 200;
-  config.posLeftConfig.maxSpeedPercent = 30;
+  config.posLeftConfig.maxSpeedPercent = 40;
   config.posLeftConfig.lastError = 0;
   config.posLeftConfig.integral = 0;
   config.posRightConfig.pFactor100 = config.posLeftConfig.pFactor100;

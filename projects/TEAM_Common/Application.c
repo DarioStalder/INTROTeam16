@@ -82,7 +82,7 @@ static void BtnMsg(int btn, const char *msg) {
 #endif
 }
 
-int calibflag = 0;
+bool calibflag = FALSE;
 
 void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
@@ -103,7 +103,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
-    if(calibflag == 0 || calibflag == 1)
+/*    if(calibflag == 0 || calibflag == 1)
     {
     REF_CalibrateStartStop();
     }
@@ -115,7 +115,10 @@ void APP_EventHandler(EVNT_Handle event) {
     {
     	LF_StopFollowing();
     }
-    calibflag++;
+    calibflag++;*/
+    LF_StartStopFollowing();
+
+
 
     break;
   case EVNT_SW1_LPRESSED:

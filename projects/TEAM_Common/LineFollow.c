@@ -60,6 +60,7 @@ void LF_StartStopFollowing(void) {
     (void)xTaskNotify(LFTaskHandle, LF_STOP_FOLLOWING, eSetBits);
   } else {
     (void)xTaskNotify(LFTaskHandle, LF_START_FOLLOWING, eSetBits);
+
   }
 }
 
@@ -76,7 +77,7 @@ static bool FollowSegment(void) {
 
   currLine = REF_GetLineValue();
   currLineKind = REF_GetLineKind();
-  if (currLineKind==REF_LINE_STRAIGHT || currLineKind==REF_LINE_RIGHT || currLineKind==REF_LINE_LEFT ) {
+  if (!(currLineKind == REF_LINE_FULL || currLine == REF_LINE_NONE)) {
     PID_Line(currLine, REF_MIDDLE_LINE_VALUE); /* move along the line */
     return TRUE;
   } else {
@@ -107,8 +108,12 @@ static void StateMachine(void) {
         LF_currState = STATE_FINISHED;
       }
       if (lineKind==REF_LINE_FULL) {
-        TURN_Turn(TURN_LEFT180, NULL);
+ //   	TURN_Turn(TURN_STEP_LINE_FW, NULL);
+ //   	 lineKind = REF_GetLineKind();
+ //   	if (lineKind==REF_LINE_FULL)
+        {TURN_Turn(TURN_LEFT180, NULL);
         DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
+        }
         LF_currState = STATE_FOLLOW_SEGMENT;
       } else {
         LF_currState = STATE_STOP;
@@ -117,6 +122,7 @@ static void StateMachine(void) {
 
     case STATE_FINISHED:
       SHELL_SendString("Finished!\r\n");
+      DRV_SetMode(DRV_MODE_NONE);
       LF_currState = STATE_STOP;
       break;
 

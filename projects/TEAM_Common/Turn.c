@@ -33,7 +33,7 @@
 #define TURN_STEPS_90         650		//DZ 700 typical
 #endif
   /*!< number of steps for a 90 degree turn */
-#define TURN_STEPS_LINE       100
+#define TURN_STEPS_LINE       400	// official 100
   /*!< number of steps stepping over the line */
 #define TURN_STEPS_POST_LINE  50
   /*!< number of steps after the line, before making a turn */
