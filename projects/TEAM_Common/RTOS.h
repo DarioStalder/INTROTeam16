@@ -9,6 +9,8 @@
 #ifndef RTOS_H_
 #define RTOS_H_
 
+#define HAS_SUMO_FIGHT 1
+
 #include "Platform.h"
 #if PL_CONFIG_HAS_RTOS
 /*! \brief Initializes the RTOS module */

@@ -474,8 +474,8 @@ void PID_Init(void) {
   config.lineFwConfig.pFactor100 = 500;
   config.lineFwConfig.iFactor100 = 20;
   config.lineFwConfig.dFactor100 = 20;
-  config.lineFwConfig.iAntiWindup = 50;
-  config.lineFwConfig.maxSpeedPercent = 40;
+  config.lineFwConfig.iAntiWindup = 200;
+  config.lineFwConfig.maxSpeedPercent = 62;
   config.lineFwConfig.lastError = 0;
   config.lineFwConfig.integral = 0;
 

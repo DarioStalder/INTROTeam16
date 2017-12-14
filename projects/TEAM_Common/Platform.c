@@ -172,6 +172,7 @@ void PL_Init(void) {
 #endif
 }
 
+
 void PL_Deinit(void) {
 #if PL_CONFIG_HAS_SUMO
   SUMO_Deinit();

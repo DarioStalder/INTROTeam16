@@ -116,7 +116,10 @@ void APP_EventHandler(EVNT_Handle event) {
     	LF_StopFollowing();
     }
     calibflag++;*/
-    LF_StartStopFollowing();
+    //LF_StartStopFollowing();
+#if  HAS_SUMO_FIGHT
+    SUMO_StartStopSumo();
+#endif
 
 
 

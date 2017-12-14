@@ -19,16 +19,17 @@
 #include "FRTOS1.h"
 #include "Sem.h"
 #include "LED.h"
+// DZ 14.12.2017 uncommment
+//static xSemaphoreHandle sem = NULL;
 
-static xSemaphoreHandle sem = NULL;
-
-static void vSlaveTask(void *pvParameters) {
+// DZ 14.12.2017 uncommment
+//static void vSlaveTask(void *pvParameters) {
   /*! \todo Implement functionality */
-}
+//}
 
-static void vMasterTask(void *pvParameters) {
+//static void vMasterTask(void *pvParameters) {
   /*! \todo send semaphore from master task to slave task */
-}
+//}
 
 void SEM_Deinit(void) {
 }
