@@ -16,6 +16,7 @@
 #include  "KeyDebounce.h"
 #include "drive.h"
 #include "Trigger.h"
+#include "Turn.h"
 
 
 void RTOS_Init(void) {
@@ -30,6 +31,10 @@ void RTOS_Init(void) {
 	xTaskCreate(Key_Task, "Key", configMINIMAL_STACK_SIZE + 100, (void *) NULL, tskIDLE_PRIORITY, NULL);
 	xTaskCreate(Event_Task, "Event", configMINIMAL_STACK_SIZE + 100, (void *) NULL, tskIDLE_PRIORITY, NULL);
 
+	//SUMO_Init();
+
+
+
 }
 
 void RTOS_Deinit(void) {
@@ -40,7 +45,7 @@ void RTOS_Deinit(void) {
 // AB hier Sumo Wettkamp Erweiterung
 
 
-#if HAS_SUMO_FIGHT
+#if 0
 
 //direct function declarition without h-file
 void SUMO_StartStopSumo(void);
@@ -49,17 +54,14 @@ void SUMO_StopSumo(void);
 bool SUMO_IsRunningSumo(void);
 void SUMO_Init(void);
 void SUMO_Deinit(void);
-void setState_FIGHT(void* param);
 
 typedef enum {
-		  SUMO_STATE_IDLE,
-		  SUMO_STATE_WAIT5MS,
-		  SUMO_STATE_FIGHT,
-		  SUMO_STATE_DRIVING,
-		  SUMO_STATE_CHECK_OBSTACLE,
-		  SUMO_STATE_CHECK_LINE,
-		  SUMO_STATE_STOP
-		} SUMO_State_t;
+  SUMO_STATE_IDLE,
+  SUMO_STATE_START_DRIVING,
+  SUMO_STATE_DRIVING,
+  SUMO_STATE_TURN,
+  SUMO_STATE_DETECT,
+} SUMO_State_t;
 
 
 static SUMO_State_t sumoState = SUMO_STATE_IDLE;
@@ -71,13 +73,17 @@ TRG_TriggerKind TRG_WAIT5MS;
 #define SUMO_START_SUMO (1<<0)  /* start sumo mode */
 #define SUMO_STOP_SUMO  (1<<1)  /* stop stop sumo */
 
-setState_FIGHT(void* param){
-	(void)param;
-	sumoState = SUMO_STATE_FIGHT;
-}
 
 bool SUMO_IsRunningSumo(void) {
-  return sumoState=SUMO_STATE_DRIVING;
+  return sumoState==SUMO_STATE_DRIVING;
+}
+
+void SUMO_StartSumo(void) {
+  (void)xTaskNotify(sumoTaskHndl, SUMO_START_SUMO, eSetBits);
+}
+
+void SUMO_StopSumo(void) {
+  (void)xTaskNotify(sumoTaskHndl, SUMO_STOP_SUMO, eSetBits);
 }
 
 void SUMO_StartStopSumo(void) {
@@ -94,80 +100,60 @@ static void SumoRun(void) {
 
   (void)xTaskNotifyWait(0UL, SUMO_START_SUMO|SUMO_STOP_SUMO, &notifcationValue, 0); /* check flags */
   for(;;) { /* breaks */
-		switch (sumoState) {
+    switch(sumoState) {
+      case SUMO_STATE_IDLE:
+        if ((notifcationValue&SUMO_START_SUMO)) {
+          sumoState = SUMO_STATE_START_DRIVING;
+          break; /* handle next state */
+        }
+        return;
 
-		case SUMO_STATE_IDLE:
-			if ((notifcationValue & SUMO_START_SUMO)) {
-				sumoState = SUMO_STATE_WAIT5MS;
-				break; /* handle next state */
-			}
-			return;
+      case SUMO_STATE_START_DRIVING:
+        DRV_SetSpeed(1000, 1000);
+        DRV_SetMode(DRV_MODE_SPEED);
+        sumoState = SUMO_STATE_TURN;
+        break; /* handle next state */
 
-		case SUMO_STATE_WAIT5MS:
-			if (notifcationValue & SUMO_STOP_SUMO) {
-				if (!TRG_setFlag) {
-					TRG_setFlag = TRUE;
-					TRG_SetTrigger(TRG_WAIT5MS, 5000 / TRG_TICKS_MS,
-							(TRG_Callback) setState_FIGHT, NULL);
-				}
-				break; /* handle next state */
-			}
-			return;
 
-		case SUMO_STATE_FIGHT:
-			if (notifcationValue & SUMO_STOP_SUMO) {
-				DRV_SetSpeed(1000, 1000);		// maybe change to 8000 8000
+      case SUMO_STATE_TURN:
+			if(DIST_NearFrontObstacle(100)){		// front obstracle
 				DRV_SetMode(DRV_MODE_SPEED);
-				sumoState = SUMO_STATE_CHECK_OBSTACLE;
-				break; /* handle next state */
+				DRV_SetSpeed(2000,2000);
+			}else if(DIST_NearRearObstacle(100)){	// rear obstracle
+				TURN_Turn(TURN_LEFT180, 0);
+				DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(1000,1000);
+			}else if(DIST_NearRightObstacle(100)){	// right obstracle
+				DRV_SetMode(DRV_MODE_SPEED);
+				TURN_Turn(TURN_RIGHT90, 0);
+			}else if(DIST_NearLeftObstacle(100)){	//left obstracle
+				DRV_SetMode(DRV_MODE_SPEED);
+				TURN_Turn(TURN_LEFT90, 0);
+			}else{
+				DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(4000,4000);					// nothing detected
 			}
-			return;
+			sumoState = SUMO_STATE_DRIVING;
+			break;
 
-		case SUMO_STATE_CHECK_OBSTACLE:
-			if (notifcationValue & SUMO_STOP_SUMO) {
-				if (DIST_NearFrontObstacle(200))
-				{
-					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(8000, 8000);
-				} else if (DIST_NearRearObstacle(200))
-				{
-					TURN_Turn(TURN_LEFT180, NULL);
-					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(8000, 8000);
-				} else if (DIST_NearRightObstacle(200))
-				{
-					DRV_SetMode(DRV_MODE_SPEED);
-					TURN_Turn(TURN_RIGHT90, NULL);
-					DRV_SetSpeed(8000, 8000);
-				} else if (DIST_NearLeftObstacle(200))
-				{
-					DRV_SetMode(DRV_MODE_SPEED);
-					TURN_Turn(TURN_LEFT90, NULL);
-					DRV_SetSpeed(8000, 8000);
-				} else
-				{
-					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(1000, 1000);
-				break; /* handle next state */
-			}
-			return;
+      case SUMO_STATE_DRIVING:
+        if (notifcationValue&SUMO_STOP_SUMO) {
+           DRV_SetMode(DRV_MODE_STOP);
+           sumoState = SUMO_STATE_IDLE;
+           break; /* handle next state */
+        }
+        return;
 
-		case:
-
-		default: /* should not happen? */
-		return;
-	}
-	/* switch */
-} /* for */
+      default: /* should not happen? */
+        return;
+    } /* switch */
+  } /* for */
 }
 
 static void SumoTask(void* param) {
   sumoState = SUMO_STATE_IDLE;
   for(;;) {
-    if (notifcationValue&SUMO_STOP_SUMO) {
-       sumoState = SUMO_STATE_STOP;
     SumoRun();
-
     vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
@@ -178,13 +164,5 @@ void SUMO_Init(void) {
   }
 }
 
-
-
-
-
-
-
-
-#endif
-
+#endif /* Sumo Fight */
 #endif /* PL_CONFIG_HAS_RTOS */

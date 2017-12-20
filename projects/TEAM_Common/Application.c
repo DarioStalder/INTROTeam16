@@ -82,7 +82,7 @@ static void BtnMsg(int btn, const char *msg) {
 #endif
 }
 
-bool calibflag = FALSE;
+int longPressedFLAG =0;
 
 void APP_EventHandler(EVNT_Handle event) {
   /*! \todo handle events */
@@ -103,29 +103,17 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
-/*    if(calibflag == 0 || calibflag == 1)
-    {
-    REF_CalibrateStartStop();
-    }
-    if(calibflag == 2)
-    {
-    	LF_StartFollowing();
-    }
-    if(calibflag == 3)
-    {
-    	LF_StopFollowing();
-    }
-    calibflag++;*/
-    //LF_StartStopFollowing();
-#if  HAS_SUMO_FIGHT
-    SUMO_StartStopSumo();
+
+#if PL_CONFIG_HAS_SUMO
+
 #endif
-
-
-
     break;
   case EVNT_SW1_LPRESSED:
     BtnMsg(1, "long pressed");
+    longPressedFLAG = 1;
+#if PL_CONFIG_HAS_REFLECTANCE
+    REF_CalibrateStartStop();
+#endif
 
 #if PL_CONFIG_HAS_BUZZER
     BUZ_PlayTune(BUZ_TUNE_BUTTON_LONG);
@@ -133,6 +121,12 @@ void APP_EventHandler(EVNT_Handle event) {
      break;
   case EVNT_SW1_RELEASED:
     BtnMsg(1, "released");
+    if(longPressedFLAG) {
+            longPressedFLAG = 0;
+    }
+    else{
+    	   SUMO_StartStopSumo();
+    }
      break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=2

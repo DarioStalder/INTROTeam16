@@ -15,6 +15,8 @@
 #include "CLS1.h"
 #include "Buzzer.h"
 #include "UTIL1.h"
+#include "Distance.h"
+#include "LineFollow.h"
 
 typedef enum {
   SUMO_STATE_IDLE,
@@ -64,6 +66,8 @@ static void SumoRun(void) {
         return;
 
       case SUMO_STATE_START_DRIVING:
+
+
         DRV_SetSpeed(1000, 1000);
         DRV_SetMode(DRV_MODE_SPEED);
         sumoState = SUMO_STATE_DRIVING;
@@ -75,6 +79,39 @@ static void SumoRun(void) {
            sumoState = SUMO_STATE_IDLE;
            break; /* handle next state */
         }
+
+        REF_LineKind line = REF_GetLineKind();
+			if (line == REF_LINE_NONE) {
+				if (DIST_NearFrontObstacle(100)) {		// front obstracle
+					DRV_SetMode(DRV_MODE_SPEED);
+					DRV_SetSpeed(2000, 2000);
+				}
+				if (DIST_NearRearObstacle(100)) {	// rear obstracle
+					TURN_Turn(TURN_LEFT180, 0);
+					DRV_SetMode(DRV_MODE_SPEED);
+					DRV_SetSpeed(1000, 1000);
+				}
+				if (DIST_NearRightObstacle(100)) {	// right obstracle
+					DRV_SetMode(DRV_MODE_SPEED);
+					TURN_Turn(TURN_RIGHT90, 0);
+					DRV_SetMode(DRV_MODE_SPEED);
+					DRV_SetSpeed(4000, 4000);
+				}
+				if (DIST_NearLeftObstacle(100)) {	//left obstracle
+					DRV_SetMode(DRV_MODE_SPEED);
+					TURN_Turn(TURN_LEFT90, 0);
+					DRV_SetMode(DRV_MODE_SPEED);
+					DRV_SetSpeed(4000, 4000);
+					// nothing detected}
+				}
+			} else {
+				TURN_Turn(TURN_LEFT180, 0);
+				DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(1000, 1000);
+			}
+
+        //fight cases
+
         return;
 
       default: /* should not happen? */
@@ -87,7 +124,7 @@ static void SumoTask(void* param) {
   sumoState = SUMO_STATE_IDLE;
   for(;;) {
     SumoRun();
-    vTaskDelay(pdMS_TO_TICKS(10));
+    vTaskDelay(pdMS_TO_TICKS(50));
   }
 }
 
@@ -132,10 +169,10 @@ uint8_t SUMO_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_St
 #if PL_HAS_TOF_SENSOR
   } else if (UTIL1_strcmp(cmd, "sumo radar on")==0) {
     *handled = TRUE;
-    sumoRadar = TRUE;
+    //sumoRadar = TRUE;
   } else if (UTIL1_strcmp(cmd, "sumo radar off")==0) {
     *handled = TRUE;
-    sumoRadar = FALSE;
+    //sumoRadar = FALSE;
 #endif
   }
   return ERR_OK;
@@ -144,6 +181,7 @@ uint8_t SUMO_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_St
 void SUMO_Init(void) {
   if (xTaskCreate(SumoTask, "Sumo", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, &sumoTaskHndl) != pdPASS) {
     for(;;){} /* error case only, stay here! */
+
   }
 }
 
