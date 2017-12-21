@@ -121,7 +121,7 @@ static void StateMachine(void) {
       break;
 
     case STATE_FINISHED:
-      SHELL_SendString("Finished!\r\n");
+    //  SHELL_SendString("Finished!\r\n");
       DRV_SetMode(DRV_MODE_NONE);
       LF_currState = STATE_STOP;
       break;
@@ -130,7 +130,7 @@ static void StateMachine(void) {
 #if 0
       RNETA_SendSignal('C'); /*! \todo */
 #endif
-      SHELL_SendString("Stopped!\r\n");
+    //  SHELL_SendString("Stopped!\r\n");
       TURN_Turn(TURN_STOP, NULL);
       LF_currState = STATE_IDLE;
       break;

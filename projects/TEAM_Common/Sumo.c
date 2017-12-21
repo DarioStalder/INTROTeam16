@@ -16,7 +16,6 @@
 #include "Buzzer.h"
 #include "UTIL1.h"
 #include "Distance.h"
-#include "LineFollow.h"
 
 typedef enum {
   SUMO_STATE_IDLE,
@@ -66,65 +65,71 @@ static void SumoRun(void) {
         return;
 
       case SUMO_STATE_START_DRIVING:
-
-
+    	//  vTaskDelay(pdMS_TO_TICKS(5000));
         DRV_SetSpeed(1000, 1000);
         DRV_SetMode(DRV_MODE_SPEED);
         sumoState = SUMO_STATE_DRIVING;
         break; /* handle next state */
 
       case SUMO_STATE_DRIVING:
-        if (notifcationValue&SUMO_STOP_SUMO) {
-           DRV_SetMode(DRV_MODE_STOP);
-           sumoState = SUMO_STATE_IDLE;
-           break; /* handle next state */
-        }
-
-        REF_LineKind line = REF_GetLineKind();
-			if (line == REF_LINE_NONE) {
-				if (DIST_NearFrontObstacle(100)) {		// front obstracle
+			if (notifcationValue & SUMO_STOP_SUMO) {
+				DRV_SetMode(DRV_MODE_STOP);
+				sumoState = SUMO_STATE_IDLE;
+				break; /* handle next state */
+			}
+			REF_LineKind line = REF_GetLineKind();
+			if (line == REF_LINE_FULL) {
+				if (DIST_NearFrontObstacle(200)) {		// front obstracle
 					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(2000, 2000);
+					DRV_SetSpeed(5000, 5000);
 				}
-				if (DIST_NearRearObstacle(100)) {	// rear obstracle
-					TURN_Turn(TURN_LEFT180, 0);
+				if (DIST_NearRearObstacle(200)) {	// rear obstracle
+					TURN_Turn(TURN_LEFT90, 0);
 					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(1000, 1000);
+					DRV_SetSpeed(5000, 5000);
 				}
-				if (DIST_NearRightObstacle(100)) {	// right obstracle
+				if (DIST_NearRightObstacle(200)) {	// right obstracle
 					DRV_SetMode(DRV_MODE_SPEED);
 					TURN_Turn(TURN_RIGHT90, 0);
 					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(4000, 4000);
+					DRV_SetSpeed(5000, 5000);
 				}
-				if (DIST_NearLeftObstacle(100)) {	//left obstracle
+				if (DIST_NearLeftObstacle(200)) {	//left obstracle
 					DRV_SetMode(DRV_MODE_SPEED);
 					TURN_Turn(TURN_LEFT90, 0);
 					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(4000, 4000);
+					DRV_SetSpeed(5000, 5000);
 					// nothing detected}
 				}
-			} else {
-				TURN_Turn(TURN_LEFT180, 0);
+			} else if (line == REF_LINE_RIGHT) {
+				TURN_Turn(TURN_LEFT90, 0);
 				DRV_SetMode(DRV_MODE_SPEED);
-				DRV_SetSpeed(1000, 1000);
+				DRV_SetSpeed(5000, 5000);
+			} else if (line == REF_LINE_LEFT) {
+				TURN_Turn(TURN_RIGHT90, 0);
+				DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(5000, 5000);
+			} else if (line == REF_LINE_STRAIGHT) {
+				TURN_Turn(TURN_LEFT90, 0);
+				DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(5000, 5000);
 			}
 
-        //fight cases
+			//fight cases
 
-        return;
+			return;
 
-      default: /* should not happen? */
-        return;
-    } /* switch */
-  } /* for */
+		default: /* should not happen? */
+			return;
+		} /* switch */
+	} /* for */
 }
 
 static void SumoTask(void* param) {
   sumoState = SUMO_STATE_IDLE;
   for(;;) {
     SumoRun();
-    vTaskDelay(pdMS_TO_TICKS(50));
+    vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
 

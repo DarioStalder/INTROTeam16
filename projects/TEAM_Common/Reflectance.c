@@ -31,9 +31,9 @@
 #endif
 
 #define REF_NOF_SENSORS       6 /* number of sensors */
-#define REF_SENSOR1_IS_LEFT   1 /* sensor number one is on the left side */
+#define REF_SENSOR1_IS_LEFT   0 /* sensor number one is on the left side */
 #define REF_MIN_NOISE_VAL     0x40   /* values below this are not added to the weighted sum */
-#define REF_USE_WHITE_LINE    0  /* if set to 1, then the robot is using a white (on black) line, otherwise a black (on white) line */
+#define REF_USE_WHITE_LINE    0	  /* if set to 1, then the robot is using a white (on black) line, otherwise a black (on white) line */
 #define SENSORTIME 		(RefCnt_CNT_INP_FREQ_U_0 *0.002)	// ds Zeit definiert
 #define REF_START_STOP_CALIB      1 /* start/stop calibration commands */
 #if REF_START_STOP_CALIB
@@ -328,7 +328,7 @@ static REF_LineKind ReadLineKind(SensorTimeType val[REF_NOF_SENSORS]) {
 }
 #endif
 
-#if 1 || PL_CONFIG_HAS_LINE_FOLLOW
+#if 0 || PL_CONFIG_HAS_LINE_FOLLOW
 static REF_LineKind refLineKind = REF_LINE_NONE;
 
 REF_LineKind REF_GetLineKind(void) {
@@ -596,7 +596,7 @@ void REF_Init(void) {
   refState = REF_STATE_INIT;
   timerHandle = RefCnt_Init(NULL);
   /*! \todo You might need to adjust priority or other task settings */
-  if (xTaskCreate(ReflTask, "Refl", 600/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1, NULL) != pdPASS) {
+  if (xTaskCreate(ReflTask, "Refl", 600/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {
     for(;;){} /* error */
   }
 }
