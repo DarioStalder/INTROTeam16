@@ -37,7 +37,7 @@
   /*!< number of steps stepping over the line */
 #define TURN_STEPS_POST_LINE  50
   /*!< number of steps after the line, before making a turn */
-#define TURN_STEPS_90_TIMEOUT_MS        1000
+#define TURN_STEPS_90_TIMEOUT_MS        200 // 1000
 #define TURN_STEPS_LINE_TIMEOUT_MS      200
 #define TURN_STEPS_POST_LINE_TIMEOUT_MS 200
 #define TURN_STEPS_STOP_TIMEOUT_MS      150

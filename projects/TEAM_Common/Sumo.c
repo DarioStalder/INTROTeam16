@@ -63,11 +63,15 @@ static void SumoRun(void) {
           break; /* handle next state */
         }
         return;
+#define speedleft 9000
+#define speedright 9000
+#define time 350
 
       case SUMO_STATE_START_DRIVING:
-    	//  vTaskDelay(pdMS_TO_TICKS(5000));
-        DRV_SetSpeed(1000, 1000);
-        DRV_SetMode(DRV_MODE_SPEED);
+    	  EnterCritical();
+    	  vTaskDelay(pdMS_TO_TICKS(4500));
+    	  ExitCritical();
+        DRV_SetSpeed(speedleft, speedright);
         sumoState = SUMO_STATE_DRIVING;
         break; /* handle next state */
 
@@ -78,45 +82,64 @@ static void SumoRun(void) {
 				break; /* handle next state */
 			}
 			REF_LineKind line = REF_GetLineKind();
+			DRV_SetMode(DRV_MODE_SPEED);
 			if (line == REF_LINE_FULL) {
-				if (DIST_NearFrontObstacle(200)) {		// front obstracle
-					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(5000, 5000);
+				if (DIST_NearFrontObstacle(250)) {		// front obstracle
+					//DRV_SetMode(DRV_MODE_SPEED);
+					DRV_SetSpeed(speedleft, speedright);
 				}
-				if (DIST_NearRearObstacle(200)) {	// rear obstracle
+				if (DIST_NearRearObstacle(250)) {	// rear obstracle
 					TURN_Turn(TURN_LEFT90, 0);
-					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(5000, 5000);
+					//DRV_SetMode(DRV_MODE_SPEED);
+					DRV_SetSpeed(speedleft, speedright);
 				}
-				if (DIST_NearRightObstacle(200)) {	// right obstracle
-					DRV_SetMode(DRV_MODE_SPEED);
+				if (DIST_NearRightObstacle(250)) {	// right obstracle
 					TURN_Turn(TURN_RIGHT90, 0);
-					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(5000, 5000);
+					//DRV_SetMode(DRV_MODE_SPEED);
+					DRV_SetSpeed(speedleft, speedright);
 				}
-				if (DIST_NearLeftObstacle(200)) {	//left obstracle
-					DRV_SetMode(DRV_MODE_SPEED);
+				if (DIST_NearLeftObstacle(250)) {	//left obstracle
 					TURN_Turn(TURN_LEFT90, 0);
-					DRV_SetMode(DRV_MODE_SPEED);
-					DRV_SetSpeed(5000, 5000);
+					//DRV_SetMode(DRV_MODE_SPEED);
+					DRV_SetSpeed(speedleft, speedright);
 					// nothing detected}
 				}
-			} else if (line == REF_LINE_RIGHT) {
-				TURN_Turn(TURN_LEFT90, 0);
-				DRV_SetMode(DRV_MODE_SPEED);
-				DRV_SetSpeed(5000, 5000);
-			} else if (line == REF_LINE_LEFT) {
-				TURN_Turn(TURN_RIGHT90, 0);
-				DRV_SetMode(DRV_MODE_SPEED);
-				DRV_SetSpeed(5000, 5000);
-			} else if (line == REF_LINE_STRAIGHT) {
-				TURN_Turn(TURN_LEFT90, 0);
-				DRV_SetMode(DRV_MODE_SPEED);
-				DRV_SetSpeed(5000, 5000);
 			}
-
+			if (line == REF_LINE_RIGHT) {
+				DRV_SetSpeed(-speedleft, -speedright);
+				DRV_SetMode(DRV_MODE_SPEED);
+				vTaskDelay(pdMS_TO_TICKS(time));
+				TURN_Turn(TURN_RIGHT90, 0);
+				//DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(speedleft, speedright);
+			}
+			if (line == REF_LINE_LEFT) {
+				DRV_SetSpeed(-speedleft, -speedright);
+				DRV_SetMode(DRV_MODE_SPEED);
+				vTaskDelay(pdMS_TO_TICKS(time));
+				TURN_Turn(TURN_RIGHT90, 0);
+				//DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(speedleft, speedright);
+			}
+			if (line == REF_LINE_STRAIGHT) {
+				  DRV_SetSpeed(-speedleft, -speedright);
+				  DRV_SetMode(DRV_MODE_SPEED);
+				 vTaskDelay(pdMS_TO_TICKS(time));
+				TURN_Turn(TURN_LEFT90, 0);
+				//DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(speedleft, speedright);
+			}
+		   if (line == REF_LINE_NONE)
+		   {
+			   DRV_SetSpeed(-speedleft, -speedright);
+			   DRV_SetMode(DRV_MODE_SPEED);
+			   vTaskDelay(pdMS_TO_TICKS(time));
+				TURN_Turn(TURN_RIGHT180, 0);
+				//DRV_SetMode(DRV_MODE_SPEED);
+				DRV_SetSpeed(speedleft, speedright);
+		   	   }
 			//fight cases
-
+	        DRV_SetMode(DRV_MODE_SPEED);
 			return;
 
 		default: /* should not happen? */
@@ -129,7 +152,7 @@ static void SumoTask(void* param) {
   sumoState = SUMO_STATE_IDLE;
   for(;;) {
     SumoRun();
-    vTaskDelay(pdMS_TO_TICKS(10));
+    vTaskDelay(pdMS_TO_TICKS(5));
   }
 }
 
